@@ -7,7 +7,7 @@ app.use(express.json())
 
 connectToMongo()
 app.use('/api/v1/auth',require('./routes/auth'))
-//app.use('/api/v1/notes',require('./routes/notes'))
+app.use('/api/v1/notes',require('./routes/notes'))
 
 
 
