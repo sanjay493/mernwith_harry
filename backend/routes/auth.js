@@ -4,10 +4,11 @@ const { body, validationResult } = require('express-validator');
 const router=express.Router()
 const bcrypt=require('bcryptjs')
 const jwt=require('jsonwebtoken')
+var fetchuser =require('../middleware/fetchuser')
 
 
 const JWT_SECRET='NeverTrytoTellaLai'
-//create a User using : POST "/api/auth/createuser" . Doesn't require Authentication
+//Route 1: create a User using : POST "/api/auth/createuser" . Doesn't require Authentication
 router.post('/createuser',[
     body('name','Enter a valid Name Min 3 characters').isLength({min:3}),
     body('email', 'Enter a valid Email').isEmail().toLowerCase(),
@@ -21,8 +22,8 @@ router.post('/createuser',[
    }
   
   try{
-      // check whether the email exit
-      //search email from exiting database
+      // check whether the email exist
+      //search email from existing database
   let user=await User.findOne({email:req.body.email})
   if(user){
       return res.status(400).json({error:"Sorry a user with this email already exists"})
@@ -37,18 +38,19 @@ router.post('/createuser',[
     password: secPass,
   })
   const data={
+    user: {
       id:user.id
-  }
+  }}
   const authToken=jwt.sign(data,JWT_SECRET)
  
-  res.json(authToken)
+  res.json({authToken})
   }catch (error){
       console.error(error.message)
       res.status(500).send("Some error occurred")
   }
 })
 
-//Login User using : POST "/api/auth/login" . Doesn't require Authentication
+//Route 2: Login User using : POST "/api/auth/login" . Doesn't require Authentication
 router.post('/login',[
  body('email', 'Enter a valid Email').isEmail().toLowerCase(),
   body('password','password can not be empty').exists(),
@@ -59,7 +61,8 @@ router.post('/login',[
  if (!errors.isEmpty()) {
    return res.status(400).json({ errors: errors.array() });
  }
-const {email,password}=req.body
+ //Destructure req.body data in email and password variables
+const { email,password }=req.body
 try{
     // check whether the email exit
     //search email from exiting database
@@ -73,15 +76,31 @@ if(!passwordCompare){
   return res.status(400).json({error:"Enter a valid Credentails"})
 } 
 const data={
+  user: {
     id:user.id
-}
+}}
 const authToken=jwt.sign(data,JWT_SECRET)
 
 res.json(authToken)
 }catch (error){
     console.error(error.message)
-    res.status(500).send("Some error occurred")
+    res.status(500).send("Internal Server error occurred")
 }
+})
+//Route 3: Get logging User Details using : POST "/api/auth/getuser" . require Authentication
+router.post('/getuser',fetchuser,async(req,res)=>{
+  try {
+    const userId = req.user.id;
+    //user's column data can be filter by any of these method. "-columnName" means exclusion and vice versa.
+    //const user = await User.findById(userId).select("-password")
+    const user = await User.findById(userId,"-password")
+    res.send(user)
+  } catch (error) {
+    console.error(error.message)
+      res.status(500).send("Internal Server error occurred")
+  
+  }
+
 })
 
 module.exports=router
