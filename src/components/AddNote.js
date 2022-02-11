@@ -44,7 +44,7 @@ const AddNote = () => {
         </div>
        
         <button type="submit" className="btn btn-primary" onClick={handleClick}>
-          Submit
+          Add Notes
         </button>
       </form>
       </div>
