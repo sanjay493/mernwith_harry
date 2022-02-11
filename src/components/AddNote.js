@@ -16,7 +16,7 @@ const AddNote = () => {
        <div className="container my-3">
       <h2>Add a Note</h2>
       <form className="my-3">
-        <div className="form-group">
+        <div className="mb-3">
           <label htmlFor="title">Title</label>
           <input
             type="text"
@@ -42,7 +42,17 @@ const AddNote = () => {
             onChange={onChange}
           />
         </div>
-       
+        <div className="form-group">
+          <label htmlFor="tag">Tag</label>
+          <input
+            type="text"
+            className="form-control"
+            id="tag"
+            placeholder="Tag"
+            name="tag"
+            onChange={onChange}
+          />
+        </div>
         <button type="submit" className="btn btn-primary" onClick={handleClick}>
           Add Notes
         </button>
