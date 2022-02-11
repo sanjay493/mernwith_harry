@@ -6,7 +6,7 @@ import NoteContext from "./noteContext";
 const NoteState=(props)=>{
 const notesinitial=[
     {
-        "_id": "16203d838821b056578bfe53f",
+        "_id": "116203d838821b056578bfe53f",
         "user": "6203c3ae7a173935e70f12c4",
         "title": "my title 1",
         "description": "Write a diary daily to recall your memory",
@@ -15,7 +15,7 @@ const notesinitial=[
         "__v": 0
       },
       {
-        "_id": "26203d893821b056578bfe542",
+        "_id": "262103d893821b056578bfe542",
         "user": "6203c3ae7a173935e70f12c4",
         "title": "my title 1",
         "description": "Write a diary daily to recall your memory",
@@ -24,7 +24,7 @@ const notesinitial=[
         "__v": 0
       },
       {
-        "_id": "36203d89a821b056578bfe544",
+        "_id": "362031d89a821b056578bfe544",
         "user": "6203c3ae7a173935e70f12c4",
         "title": "my title 2",
         "description": "Write a diary daily to recall your memory",
@@ -33,7 +33,7 @@ const notesinitial=[
         "__v": 0
       },
       {
-        "_id": "46203d8a0821b056578bfe546",
+        "_id": "46203d81a0821b056578bfe546",
         "user": "6203c3ae7a173935e70f12c4",
         "title": "my title 3",
         "description": "Write a diary daily to recall your memory",
@@ -42,7 +42,7 @@ const notesinitial=[
         "__v": 0
       },
       {
-        "_id": "56203d8a7821b056578bfe54a",
+        "_id": "56203d8a78241b056578bfe54a",
         "user": "6203c3ae7a173935e70f12c4",
         "title": "my title 4",
         "description": "Write a diary daily to recall your memory",
@@ -52,8 +52,33 @@ const notesinitial=[
       }
 ]
 const [notes,setNotes]=useState(notesinitial)
+
+//Add Note
+const addNote=(title,description,tag)=>{
+  console.log("Adding a New Note")
+  //Todo API Call
+  const note={
+    "_id": "56203d8a7821b056578bfe54a",
+        "user": "6203c3ae7a173935e70f12c4",
+        "title": title,
+        "description": description,
+        "tag": tag,
+        "date": "2022-02-09T15:07:19.966Z",
+        "__v": 0
+  }
+setNotes(notes.concat(note))
+}
+//Delete Note
+const deleteNote=()=>{
+  
+}
+//Edit Note
+
+const editNote=()=>{
+  
+}
 return(
-      <NoteContext.Provider value={{notes,setNotes}}>
+      <NoteContext.Provider value={{notes,addNote,editNote,deleteNote}}>
         {props.children}
     </NoteContext.Provider>
 )
