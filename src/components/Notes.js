@@ -23,7 +23,7 @@ const updateNote=(currentNote)=>{
 }
 
 const handleClick=(e)=>{
-  console.log("updating the note...",note)
+  //console.log("updating the note...",note)
   editNote(note.id,note.etitle,note.edescription,note.etag)
   refClose.current.click()
   //addNote(note.title,note.description,note.tag)
@@ -64,6 +64,8 @@ const onChange=(e)=>{
             name="etitle"
             value={note.etitle}
             onChange={onChange}
+            minLength={3}
+            required
           />
 
         </div>
@@ -77,6 +79,8 @@ const onChange=(e)=>{
             name="edescription"
             value={note.edescription}
             onChange={onChange}
+            minLength={10}
+            required
           />
         </div>
         <div className="mb-3">
@@ -89,6 +93,8 @@ const onChange=(e)=>{
             name="etag"
             value={note.etag}
             onChange={onChange}
+            minLength={3}
+            required
           />
         </div>
         
@@ -98,15 +104,19 @@ const onChange=(e)=>{
         </div>
         <div className="modal-footer">
           <button ref={refClose} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button onClick={handleClick} type="button" className="btn btn-primary">Update Note</button>
+          <button disabled={note.etitle.length<3 || note.edescription.length<10 || note.etag.length<3 } onClick={handleClick} type="button" className="btn btn-primary">Update Note</button>
         </div>
       </div>
     </div>
   </div>
 
 
-       <div className="row my-3">
+       <div className=" row my-3">
         <h2>Your Notes</h2>
+        <div className="container"> 
+        {/* If there is no else statement to show, the && sign use to show true result */}
+        {notes.length===0 && 'No Notes to display'}
+        </div>
         {notes.map((note)=>{
           return <NoteItem key={note._id} updateNote={updateNote} note={note} />
         })}
